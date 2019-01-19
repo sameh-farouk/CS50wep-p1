@@ -28,7 +28,7 @@ f_bcrypt = Bcrypt(app)
 # Set up database
 #engine = create_engine(DATABASE_URL)
 #db = scoped_session(sessionmaker(bind=engine))
-
+key = app.config.get('GOODREADS_API_KEY') or os.getenv('GOODREADS_API_KEY')
 
 def login_required(f):
     @wraps(f)
@@ -171,7 +171,6 @@ def submitReview():
 
 
 def get_book_from_goodreads_api(isbn):
-    key = app.config.get('GOODREADS_API_KEY')
     if key:
         try:
             res = requests.get("https://www.goodreads.com/book/review_counts.json",
