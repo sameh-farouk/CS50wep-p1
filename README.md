@@ -3,6 +3,8 @@ Web Programming with Python and JavaScript
 
 Hi, my name is sameh farouk , this is my Goobook App , my project for the second assignment in the CS50w Course.
 
+demo at: http://goobook.azurewebsites.net/  but my azure app service free plan will expire on 2/18/2019
+
 The app name Goobook was inspired from the famouse search engine google.
 
 When you sign up, will be able to search for books by isbn , title or author name, leave reviews for individual books, and see the reviews made by other people, as checking rating and reviews statistics coming from a third-party API by Goodreads.
