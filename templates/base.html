@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="goobook, site for readers and book recommendations.">
+    <meta name="author" content="sameh farouk">
+
+    <title>{% block title %}{% endblock %} - GooBook</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static',filename='styles/cover.css') }}" rel="stylesheet">
+    {% endblock %}
+</head>
+
+<body>
+
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="masthead mb-auto">
+            {% block header %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                <div class="alert alert-light alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            <div class="inner">
+                <h3 class="masthead-brand"><a href="{{ url_for('home') }}"><span class="text-danger">G</span>oo<span
+                            class="text-danger">B</span>ook</a></h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a id="home" class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    <!-- loged out -->
+                    {% if not session.user_id %}
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#signUpModal">Sign up</a>
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#logInModal">Log in</a>
+                    {% else %}
+                    <!-- loged in -->
+                    <a id="myBooks" class="nav-link" href="{{ url_for('myBooks') }}">My Books</a>
+                    <a id="apiUsage" class="nav-link" href="{{ url_for('apiUsage') }}">Api</a>
+                    <div class="nav-link">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {{ session['user_name'] }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="{{ url_for('logOut') }}">Log out</a>
+                        </div>
+                      </div>
+                    {% endif %}
+                </nav>
+            </div>
+            {% endblock %}
+
+        </header>
+
+        <main role="main" class="inner cover">
+
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        {% block modal %}
+        {% endblock %}
+
+        <!-- footer -->
+        <footer class="mastfoot mt-auto">
+            <div class="inner">
+                {% block footer %}
+                © 2018 GooBook - Sameh farouk<br>
+                <small>This site using Modified Version of <a href='https://getbootstrap.com/docs/4.1/examples/cover/'
+                        target="_blank">Cover</a> template from Bootstrap website, by @mdo.</small>
+                {% endblock %}
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+          ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $("#{{request.endpoint}}").addClass("active");
+        })
+    </script>
+</body>
+
+</html>

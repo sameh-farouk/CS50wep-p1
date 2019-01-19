@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %} Read User Reviews and Submit your own for {{ book.title }} {% endblock %}
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static',filename='styles/details.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+{% if book %}
+<div style="display:inline-block; vertical-align:top; margin: 20px 0 20px 0;"><img src="http://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" /></div>
+
+<div style='text-align: left;'>
+    <h4> {{ book.title }} </h4>
+    <strong>isbn: </strong> {{ book.isbn }}<br>
+    <strong>Published: </strong> {{ book.publication_year }}<br>
+    <strong>Author: </strong> {{ book.author }}<br>
+    <small> added to our database in {{ book.added }} </small>
+    <hr>
+</div>
+
+{% endif %}
+
+{% if goodreads_info %}
+<div style='text-align: left;'>
+    <span>Goodreads Review Data: </span><br>
+    <strong>number of ratings: </strong> {{ goodreads_info.books[0].work_ratings_count }}<br>
+    <strong>average score: </strong> {{ goodreads_info.books[0].average_rating }} out of 5<br>
+    <small> note: this information obtained through Goodreads.com API in realtime!</small>
+</div>
+
+{% else %}
+<p>Goodreads.com API not available now!</p>
+{% endif %}
+{% if submit %}
+<div>
+    <hr>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#writeReviewModal">
+        Leave a review!
+    </button>
+</div>
+{% else %}
+<p class='thankyou' style='color: navajowhite'>Thank you for sharing your opinion of this book with us!</p>
+{% endif %}
+
+{% if reviews %}
+<div class="list-group" style='margin: 20px 0 20px 0'>
+
+    {% for review in reviews %}
+    <div class="list-group-item list-group-item-action list-group-item-dark ">
+        <div class="d-flex w-100 justify-content-between">
+            <strong class="mb-1"><span class="badge badge-light">{{ review.rating }}</span> out of 5</strong>
+            <small>added: {{ review.added }} </small>
+        </div>
+        <p class="mb-1" style='text-align: left;'>{{ review.text }}</p>
+        <small>reviewed by : <cite title="Source Title">{{ review.name }}</cite></small>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No reviews yet for this book. be the first and submit one.</p>
+{% endif %}
+{% endblock %}
+
+{% block modal %}
+<div class="modal fade" id="writeReviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-light">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark" id="exampleModalLabel">REVIEW THIS BOOK</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-signin" method="POST" action="{{ url_for('submitReview') }}">
+                    <small style="color: black">give a rating on a scale of 1 to 5</small>
+                    <div class="form-group">
+                        <input type="number" id="inputRate" class="form-control" name="rate" min="1" max="5" step="0.50"
+                            required autofocus>
+                    </div>
+                    <small style="color: black">Write a review</small>
+                    <div class="form-group">
+                        <textarea id="inputReview" class="form-control" name="review" rows="4" maxlength="8000"
+                            required></textarea>
+                    </div>
+                    <input type="hidden" id="bookId" name="bookId" value=" {{ book.id }} ">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}

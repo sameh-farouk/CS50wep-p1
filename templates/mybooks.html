@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}My books{% endblock %}
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static',filename='styles/mybooks.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+{% if page > 1 %}
+<div style='text-align: left' class="mt-2"><a class='btn btn-secondary' href=" {{ url_for('myBooks', page=page-1) }} ">Prev</a></div>
+{% endif %}
+{% if not mybooks %}
+{% if page==1 %}
+<h3>you didn't review any book yet.</h3>
+{% else %}
+<h3>No more reviews</h3>
+{% endif %}
+{% endif %}
+
+{% if mybooks %}
+<div style='text-align: left;'>
+  <strog> you had reviewed :</strong>
+    <div class="list-group" style='margin: 20px 0 20px 0'>
+      {% for book in mybooks %}
+
+      <h5><a href=" {{ url_for('bookDetails', isbn=book.isbn) }} "> {{ book.title }} </a></h5>
+
+      <a href=" {{ url_for('bookDetails', isbn=book.isbn) }} " class="list-group-item list-group-item-action list-group-item-dark ">
+
+        <div class="d-flex w-100 justify-content-between">
+
+          <small>added {{ book.added }}</small>
+        </div>
+        <div style="vertical-align:top; margin: 5px; float: left;"><img src="http://covers.openlibrary.org/b/isbn/{{ book.isbn }}-S.jpg" /></div>
+
+        <small>you wrote:</small>
+        <p class="mb-1" style='text-align: left;'>{{ book.text }}</p>
+        <strong><span class="badge badge-light">{{ book.rating }}</span> out of 5</strong>
+      </a>
+      <hr>
+
+      {% endfor %}
+    </div>
+    {% endif %}
+
+
+    {% if mybooks %}
+    page {{ page }}
+
+    {% if mybooks|length == 5 %}
+    <div style='text-align: right'><a class='btn btn-secondary' href=" {{ url_for('myBooks', page=page+1) }} ">Next</a></div>
+    {% endif %}
+    {% endif %}
+    {% endblock %}
+
+
+    {% block footer %}
+    {{ super() }}
+    {% endblock %}

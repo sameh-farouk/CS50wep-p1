@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Api usage{% endblock %}
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static',filename='styles/api.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+<div class="usage" style="text-align: left">
+    <h3>API Usage:</h3>
+    <p>using our api you can make a GET request to our website’s /api/[isbn] route, where [isbn] is an ISBN number.</p>
+    <p>our website will return a JSON response containing the book’s title, author, publication date, ISBN number,
+        review count, and average score.</p>
+    <p>The resulting JSON will follow the format:</p>
+    <code>{
+        "title": "Memory",
+        "author": "Doug Lloyd",
+        "year": 2015,
+        "isbn": "1632168146",
+        "review_count": 28,
+        "average_score": 5.0
+    }</code>
+    <p>If the requested ISBN number isn’t in our database, our website will return a 404 error.</p>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}

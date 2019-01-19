@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<h1 class="cover-heading"> Find and share books you love.</h1>
+<p class="lead">New home for readers and book recommendations</p>
+<!-- loged out -->
+{% if not session.user_id %}
+<p class="lead">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signUpModal">
+        Sign up now!
+    </button>
+</p>
+{% else %}
+<!-- loged in -->
+<!-- Search form -->
+<div id="custom-search-input">
+    <form action="{{ url_for('search') }}" method="get">
+        <div class="form-group">
+            <input type="text" class="form-control input-lg" placeholder="search keyword" name="q" required />
+        </div>
+        <button type="submit" class="btn btn-lg btn-secondary">Search</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
+{% block modal %}
+<!-- Sign up Modal -->
+<div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark" id="exampleModalLabel">Sign up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-signin" method="POST" action="{{ url_for('signUp') }}">
+                    <div class="form-group">
+                        <input type="text" id="inputName" class="form-control" placeholder="Name" name="name" required
+                            autofocus>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email"
+                            required>
+                        <small style='color:black'>you will use this email address as your username for login</small>
+
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password"
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="password should be 8 or more characters, that contains at least one digit, one lowercase and one uppercase character."
+                            minlength="8" maxlength="12" autocomplete="new-password" required>
+                        <small style='color:black'>password should be 8 or more characters, that contains at least one
+                            digit, one lowercase and one uppercase character.</small>
+
+                    </div>
+                    <button class="btn btn-primary" type="submit">Sign up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Log in Modal -->
+<div class="modal fade" id="logInModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-light">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark" id="exampleModalLabel">Log in</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-signin" method="POST" action="{{ url_for('logIn') }}">
+                    <div class="form-group">
+                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email"
+                            required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password"
+                            minlength="8" maxlength="12" autocomplete="current-password" required>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Log in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+{{ super() }}
+{% endblock %}
