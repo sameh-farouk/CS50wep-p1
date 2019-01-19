@@ -10,7 +10,7 @@ def talk_db(q):
 
 
 def register_this_user(name, emailAddress, password_hash):
-    q = text('INSERT INTO users (name, emailAddress, password) VALUES (:name, :emailAddress, :password) RETURNING id').params(
+    q = text('INSERT INTO users (name, emailAddress, password) VALUES (:name, :emailAddress, :password) RETURNING id, name').params(
         name=name, emailAddress=emailAddress, password=password_hash)
     with context_session() as session:
         try:
@@ -18,7 +18,7 @@ def register_this_user(name, emailAddress, password_hash):
         except exc.IntegrityError as e:
             print(e)
             return False
-        return r.scalar()
+        return r.fetchone()
 
 
 def get_user_by_email(emailAddress):

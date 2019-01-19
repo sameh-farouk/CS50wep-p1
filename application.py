@@ -91,7 +91,8 @@ def signUp():
     # register the user
     r = register_this_user(userName, userEmail, password_hash)
     if r:
-        session['user_id'] = r
+        session['user_id'] = r.id
+        session['user_name'] = r.name
         flash('you were registered')
         return redirect(url_for('home'))
     else:
