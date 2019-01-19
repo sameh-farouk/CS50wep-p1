@@ -146,6 +146,7 @@ def myBooks():
 def logOut():
     # do the logout
     session.pop('user_id', None)
+    session.pop('user_name', None)
     flash('you were loged out')
     return redirect(url_for('home'))
 
