@@ -4,3 +4,4 @@
 /__pycache__
 alt_import.py
 db_helper_ deprecated.py
+/flask_session/**
